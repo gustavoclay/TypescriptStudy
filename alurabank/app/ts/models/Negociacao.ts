@@ -1,5 +1,9 @@
 class Negociacao {
 
+    private _data;
+    private _quantidade;
+    private _valor;
+
     constructor(data, quantidade, valor) {
 
         this._data = data;
