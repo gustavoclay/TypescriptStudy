@@ -1,12 +1,8 @@
-var Views;
-(function (Views) {
-    class View {
-        constructor(seletor) {
-            this._elemento = $(seletor);
-        }
-        update(model) {
-            this._elemento.html(this.template(model));
-        }
+export class View {
+    constructor(seletor) {
+        this._elemento = $(seletor);
     }
-    Views.View = View;
-})(Views || (Views = {}));
+    update(model) {
+        this._elemento.html(this.template(model));
+    }
+}

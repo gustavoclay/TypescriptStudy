@@ -1,9 +1,7 @@
-var Views;
-(function (Views) {
-    var View = Views.View;
-    class NegociacoesView extends View {
-        template(model) {
-            return `
+import { View } from './View';
+export class NegociacoesView extends View {
+    template(model) {
+        return `
         
         <table class="table table-hover table-bordered">
             <thead>
@@ -31,7 +29,5 @@ var Views;
         </table>
         
         `;
-        }
     }
-    Views.NegociacoesView = NegociacoesView;
-})(Views || (Views = {}));
+}
