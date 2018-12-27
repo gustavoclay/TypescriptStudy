@@ -1,5 +1,6 @@
 import {NegociacoesView, MensagemView} from "../views/index";
 import {Negociacoes, Negociacao} from "../models/index";
+import {LogarTempoDeExecucao} from "../helpers/decorators/LogarTempoDeExecucao";
 
 export class NegociacaoController {
 
@@ -22,6 +23,7 @@ export class NegociacaoController {
         return data.getDay() != DiaDaSemana.SABADO && data.getDay() != DiaDaSemana.DOMINGO;
     }
 
+    @LogarTempoDeExecucao()
     adiciona(event: Event) {
 
         event.preventDefault();

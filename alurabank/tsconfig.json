@@ -6,7 +6,8 @@
     "noEmitOnError": true,
     "noImplicitAny": true,
     "removeComments": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "experimentalDecorators": true
   },
   "include": [
     "app/ts/**/*"
