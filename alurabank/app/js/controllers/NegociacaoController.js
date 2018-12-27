@@ -1,12 +1,6 @@
-System.register(["../views/index", "../models/index", "../helpers/decorators/LogarTempoDeExecucao"], function (exports_1, context_1) {
+System.register(["../views/index", "../models/index"], function (exports_1, context_1) {
     "use strict";
-    var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-        return c > 3 && r && Object.defineProperty(target, key, r), r;
-    };
-    var index_1, index_2, LogarTempoDeExecucao_1, NegociacaoController, DiaDaSemana;
+    var index_1, index_2, NegociacaoController, DiaDaSemana;
     var __moduleName = context_1 && context_1.id;
     return {
         setters: [
@@ -15,9 +9,6 @@ System.register(["../views/index", "../models/index", "../helpers/decorators/Log
             },
             function (index_2_1) {
                 index_2 = index_2_1;
-            },
-            function (LogarTempoDeExecucao_1_1) {
-                LogarTempoDeExecucao_1 = LogarTempoDeExecucao_1_1;
             }
         ],
         execute: function () {
@@ -47,9 +38,6 @@ System.register(["../views/index", "../models/index", "../helpers/decorators/Log
                     this._mensagemView.update('Negociação adicionada com sucesso.');
                 }
             };
-            __decorate([
-                LogarTempoDeExecucao_1.LogarTempoDeExecucao()
-            ], NegociacaoController.prototype, "adiciona", null);
             exports_1("NegociacaoController", NegociacaoController);
             (function (DiaDaSemana) {
                 DiaDaSemana[DiaDaSemana["DOMINGO"] = 0] = "DOMINGO";
