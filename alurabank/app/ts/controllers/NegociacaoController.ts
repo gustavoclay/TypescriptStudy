@@ -1,6 +1,8 @@
 import {MensagemView, NegociacoesView} from "../views/index";
-import {Negociacao, Negociacoes} from "../models/index";
+import {Negociacao, Negociacoes, NegociacaoParcial} from "../models/index";
 import {domInject} from "../helpers/decorators/domInject";
+import {throttle} from "../helpers/decorators/throttle";
+import {NegociacaoService} from "../service/NegociacaoService";
 
 export class NegociacaoController {
 
@@ -17,6 +19,8 @@ export class NegociacaoController {
     private _negociacoesView = new NegociacoesView('#negociacoesView');
     private _mensagemView = new MensagemView('#mensagemView');
 
+    private _service = new NegociacaoService();
+
     constructor() {
 
         this._negociacoesView.update(this._negociacoes);
@@ -26,6 +30,7 @@ export class NegociacaoController {
         return data.getDay() != DiaDaSemana.SABADO && data.getDay() != DiaDaSemana.DOMINGO;
     }
 
+    //@throttle() //não funciona no firefox por causa do event implicito
     adiciona(event: Event) {
 
         event.preventDefault();
@@ -53,6 +58,7 @@ export class NegociacaoController {
 
     }
 
+    @throttle()
     importaDados() {
 
         function isOK(res: Response) {
@@ -65,19 +71,17 @@ export class NegociacaoController {
 
         }
 
-        fetch('http://localhost:8080/dados')
-            .then(res => isOK(res))
-            .then(res => res.json())
-            .then((dados: any[]) => {
-                dados
-                    .map(dado => new Negociacao(new Date(), dado.vezes, dado.montante))
-                    .forEach(negociacao => this._negociacoes.adiciona(negociacao));
-                this._negociacoesView.update(this._negociacoes);
-            })
-            .catch(err => console.log(err.message));
-    }
+        this._service.obterNegociacoes(isOK).then(negociacoes => {
 
-}
+            negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao));
+            this._negociacoesView.update(this._negociacoes);
+        });
+
+
+    }//ImportaDados
+
+
+} //NegociacaoController
 
 
 enum DiaDaSemana {

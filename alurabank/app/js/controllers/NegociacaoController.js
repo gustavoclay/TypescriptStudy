@@ -1,4 +1,4 @@
-System.register(["../views/index", "../models/index", "../helpers/decorators/domInject"], function (exports_1, context_1) {
+System.register(["../views/index", "../models/index", "../helpers/decorators/domInject", "../helpers/decorators/throttle", "../service/NegociacaoService"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -6,7 +6,7 @@ System.register(["../views/index", "../models/index", "../helpers/decorators/dom
         else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
-    var index_1, index_2, domInject_1, NegociacaoController, DiaDaSemana;
+    var index_1, index_2, domInject_1, throttle_1, NegociacaoService_1, NegociacaoController, DiaDaSemana;
     var __moduleName = context_1 && context_1.id;
     return {
         setters: [
@@ -18,6 +18,12 @@ System.register(["../views/index", "../models/index", "../helpers/decorators/dom
             },
             function (domInject_1_1) {
                 domInject_1 = domInject_1_1;
+            },
+            function (throttle_1_1) {
+                throttle_1 = throttle_1_1;
+            },
+            function (NegociacaoService_1_1) {
+                NegociacaoService_1 = NegociacaoService_1_1;
             }
         ],
         execute: function () {
@@ -26,6 +32,7 @@ System.register(["../views/index", "../models/index", "../helpers/decorators/dom
                     this._negociacoes = new index_2.Negociacoes();
                     this._negociacoesView = new index_1.NegociacoesView('#negociacoesView');
                     this._mensagemView = new index_1.MensagemView('#mensagemView');
+                    this._service = new NegociacaoService_1.NegociacaoService();
                     this._negociacoesView.update(this._negociacoes);
                 }
                 _isDiaUtil(data) {
@@ -52,16 +59,10 @@ System.register(["../views/index", "../models/index", "../helpers/decorators/dom
                             throw new Error(res.statusText);
                         }
                     }
-                    fetch('http://localhost:8080/dados')
-                        .then(res => isOK(res))
-                        .then(res => res.json())
-                        .then((dados) => {
-                        dados
-                            .map(dado => new index_2.Negociacao(new Date(), dado.vezes, dado.montante))
-                            .forEach(negociacao => this._negociacoes.adiciona(negociacao));
+                    this._service.obterNegociacoes(isOK).then(negociacoes => {
+                        negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao));
                         this._negociacoesView.update(this._negociacoes);
-                    })
-                        .catch(err => console.log(err.message));
+                    });
                 }
             };
             __decorate([
@@ -73,6 +74,9 @@ System.register(["../views/index", "../models/index", "../helpers/decorators/dom
             __decorate([
                 domInject_1.domInject('#valor')
             ], NegociacaoController.prototype, "_inputValor", void 0);
+            __decorate([
+                throttle_1.throttle()
+            ], NegociacaoController.prototype, "importaDados", null);
             exports_1("NegociacaoController", NegociacaoController);
             (function (DiaDaSemana) {
                 DiaDaSemana[DiaDaSemana["DOMINGO"] = 0] = "DOMINGO";

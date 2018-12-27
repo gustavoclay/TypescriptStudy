@@ -29,7 +29,7 @@ export function LogarTempoDeExecucao(emSegundos: boolean = false) {
 
             return retorno;
 
-        }
+        };
 
         return descriptor;
 
