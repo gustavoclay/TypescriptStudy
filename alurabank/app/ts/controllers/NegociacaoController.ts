@@ -1,8 +1,8 @@
-import {MensagemView, NegociacoesView} from "../views/index";
-import {Negociacao, Negociacoes, NegociacaoParcial} from "../models/index";
-import {domInject} from "../helpers/decorators/domInject";
-import {throttle} from "../helpers/decorators/throttle";
-import {NegociacaoService} from "../service/NegociacaoService";
+import { NegociacoesView, MensagemView } from '../views/index';
+import { Negociacao, Negociacoes } from '../models/index';
+import { domInject, throttle } from '../helpers/decorators/index';
+import { NegociacaoParcial } from '../models/index';
+import { NegociacaoService } from '../services/index';
 
 export class NegociacaoController {
 
@@ -11,80 +11,77 @@ export class NegociacaoController {
 
     @domInject('#quantidade')
     private _inputQuantidade: JQuery;
-
+    
     @domInject('#valor')
     private _inputValor: JQuery;
-
+    
     private _negociacoes = new Negociacoes();
     private _negociacoesView = new NegociacoesView('#negociacoesView');
     private _mensagemView = new MensagemView('#mensagemView');
 
     private _service = new NegociacaoService();
-
+    
     constructor() {
-
         this._negociacoesView.update(this._negociacoes);
     }
 
-    private _isDiaUtil(data: Date) {
-        return data.getDay() != DiaDaSemana.SABADO && data.getDay() != DiaDaSemana.DOMINGO;
-    }
+    @throttle()
+    adiciona() {
+        let data = new Date(this._inputData.val().replace(/-/g, ','));
 
-    //@throttle() //não funciona no firefox por causa do event implicito
-    adiciona(event: Event) {
+        if(!this._ehDiaUtil(data)) {
 
-        event.preventDefault();
-
-        /*
-        * Checagem de negociações fora de dias úteis
-        */
-        let data = new Date(this._inputData.val().replace(/-/g, '/'));
-        if (!this._isDiaUtil(data)) {
-
-            this._mensagemView.update('Só é permitido negociações somente em dias úteis.');
-            return
+            this._mensagemView.update('Somente negociações em dias úteis, por favor!');
+            return 
         }
 
-
         const negociacao = new Negociacao(
-            data,
+            data, 
             parseInt(this._inputQuantidade.val()),
             parseFloat(this._inputValor.val())
         );
 
         this._negociacoes.adiciona(negociacao);
-        this._negociacoesView.update(this._negociacoes);
-        this._mensagemView.update('Negociação adicionada com sucesso.');
 
+        this._negociacoesView.update(this._negociacoes);
+        this._mensagemView.update('Negociação adicionada com sucesso!');
+    }
+
+    private _ehDiaUtil(data: Date) {
+
+        return data.getDay() != DiaDaSemana.Sabado && data.getDay() != DiaDaSemana.Domingo;
     }
 
     @throttle()
     importaDados() {
 
-        function isOK(res: Response) {
+        this._service
+            .obterNegociacoes(res => {
 
-            if (res.ok) {
-                return res;
-            } else {
-                throw new Error(res.statusText);
-            }
+                if(res.ok) {
+                    return res;
+                } else {
+                    throw new Error(res.statusText);
+                }
+            })
+            .then(negociacoes => {
 
-        }
+                negociacoes.forEach(negociacao => 
+                    this._negociacoes.adiciona(negociacao));
+                
+                this._negociacoesView.update(this._negociacoes);
 
-        this._service.obterNegociacoes(isOK).then(negociacoes => {
-
-            negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao));
-            this._negociacoesView.update(this._negociacoes);
-        });
-
-
-    }//ImportaDados
-
-
-} //NegociacaoController
-
+            });
+    }
+}
 
 enum DiaDaSemana {
 
-    DOMINGO, SEGUNDA, TERCA, QUARTA, QUINTA, SEXTA, SABADO
+    Domingo, 
+    Segunda, 
+    Terca, 
+    Quarta, 
+    Quinta, 
+    Sexta, 
+    Sabado
 }

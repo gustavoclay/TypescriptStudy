@@ -12,7 +12,6 @@ System.register(["./View"], function (exports_1, context_1) {
             NegociacoesView = class NegociacoesView extends View_1.View {
                 template(model) {
                     return `
-        
         <table class="table table-hover table-bordered">
             <thead>
                 <tr>
@@ -30,14 +29,13 @@ System.register(["./View"], function (exports_1, context_1) {
                             <td>${negociacao.quantidade}</td>
                             <td>${negociacao.valor}</td>
                             <td>${negociacao.volume}</td>
-                        </tr>
-                    `).join('')}
+                        <tr>
+                    `).join('')}            
             </tbody>
 
             <tfoot>
             </tfoot>
         </table>
-        
         `;
                 }
             };

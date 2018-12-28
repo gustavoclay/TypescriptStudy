@@ -1,15 +1,15 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "outDir": "app/js",
-    "module": "system",
-    "noEmitOnError": true,
-    "noImplicitAny": true,
-    "removeComments": true,
-    "strictNullChecks": true,
-    "experimentalDecorators": true
-  },
-  "include": [
-    "app/ts/**/*"
-  ]
+    "compilerOptions": {
+        "target": "es6",
+        "outDir": "app/js",
+        "noEmitOnError": true, 
+        "noImplicitAny": true,
+        "removeComments": true,
+        "module": "system",
+        "strictNullChecks": true,
+        "experimentalDecorators": true
+    },
+    "include": [
+        "app/ts/**/*"
+    ]
 }
