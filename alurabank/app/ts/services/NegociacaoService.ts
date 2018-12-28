@@ -3,6 +3,7 @@ export class NegociacaoService {
 
     obterNegociacoes(handler: HandlerFunction): Promise<Negociacao[]> {
 
+        // @ts-ignore
         return fetch('http://localhost:8080/dados')
             .then(res => handler(res))
             .then(res => res.json())

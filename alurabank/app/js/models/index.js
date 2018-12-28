@@ -1,4 +1,4 @@
-System.register(["./Negociacao", "./Negociacoes"], function (exports_1, context_1) {
+System.register(["./Imprimivel", "./Negociacao", "./Negociacoes"], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     function exportStar_1(m) {
@@ -10,6 +10,9 @@ System.register(["./Negociacao", "./Negociacoes"], function (exports_1, context_
     }
     return {
         setters: [
+            function (Imprimivel_1_1) {
+                exportStar_1(Imprimivel_1_1);
+            },
             function (Negociacao_1_1) {
                 exportStar_1(Negociacao_1_1);
             },
